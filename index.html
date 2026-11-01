@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="da">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sanglektier Sankt Annæ</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,500&family=Nunito:wght@400;600;700;800&display=swap">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)} [hidden]{display:none!important}</style>
+</head>
+<body>
+<style>
+  /* Layout: one centered column; a song list, then a single large verse card with controls pinned below it. */
+  :root {
+    --bg: #eef2f8;        /* snow-blue paper */
+    --card: #ffffff;
+    --fg: #182238;        /* ink */
+    --muted: #5d6680;
+    --line: #d6dce8;
+    --accent: #b5832a;    /* candle gold */
+    --accent-soft: #f6ecd6;
+    --accent-ink: #ffffff;
+    --hidden-fill: #e3e8f1;
+    --shadow: 0 10px 30px rgba(24, 34, 56, .10);
+    --display: "Fraunces", "Georgia", serif;
+    --body: "Nunito", "Segoe UI", system-ui, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #111827; --card: #1b2335; --fg: #eef1f7; --muted: #a2abbf; --line: #2e3850;
+      --accent: #e2b45a; --accent-soft: #33301f; --accent-ink: #1b1a12; --hidden-fill: #2a3448;
+      --shadow: 0 10px 30px rgba(0,0,0,.35); color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #111827; --card: #1b2335; --fg: #eef1f7; --muted: #a2abbf; --line: #2e3850;
+    --accent: #e2b45a; --accent-soft: #33301f; --accent-ink: #1b1a12; --hidden-fill: #2a3448;
+    --shadow: 0 10px 30px rgba(0,0,0,.35); color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0; background: var(--bg); color: var(--fg);
+    font-family: var(--body); font-size: 17px; line-height: 1.5;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    padding-block: 0;
+  }
+  body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+  button { font: inherit; color: inherit; cursor: pointer; border: 0; background: none; -webkit-tap-highlight-color: transparent; }
+  button:focus-visible, a:focus-visible, .line:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
+
+  .wrap { max-width: 640px; margin: 0 auto; min-height: 100%; display: flex; flex-direction: column; }
+
+  /* ---------- Song list ---------- */
+  .home { padding-block: 32px 40px; }
+  .home h1 { font-family: var(--display); font-weight: 700; font-size: clamp(2rem, 7vw, 2.8rem); line-height: 1.05; margin: 0 0 6px; text-wrap: balance; }
+  .home .sub { color: var(--muted); margin: 0 0 24px; }
+  .songs { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  .song-btn {
+    width: 100%; text-align: left; background: var(--card); border-radius: 14px; box-shadow: var(--shadow);
+    padding: 16px 18px; display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 12px;
+    transition: transform .12s ease;
+  }
+  .song-btn:active { transform: scale(.985); }
+  .song-btn .t { font-family: var(--display); font-size: 1.35rem; font-weight: 500; line-height: 1.2; }
+  .song-btn .m { color: var(--muted); font-size: .9rem; margin-top: 2px; }
+  .song-btn .n { font-weight: 800; color: var(--accent); background: var(--accent-soft); border-radius: 999px; padding: 4px 11px; font-size: .85rem; white-space: nowrap; font-variant-numeric: tabular-nums; }
+
+  /* ---------- Song view ---------- */
+  .view { display: flex; flex-direction: column; flex: 1; padding-block: 14px 20px; gap: 14px; }
+  .top { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+  .back { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); font-weight: 700; padding: 8px 10px 8px 4px; border-radius: 8px; }
+  .back svg { width: 18px; height: 18px; }
+  .parts { display: flex; gap: 4px; background: var(--card); border-radius: 999px; padding: 4px; box-shadow: var(--shadow); }
+  .parts button { padding: 6px 12px; border-radius: 999px; font-weight: 700; font-size: .85rem; color: var(--muted); }
+  .parts button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); }
+
+  .head h2 { font-family: var(--display); font-weight: 700; font-size: clamp(1.5rem, 5.5vw, 2rem); line-height: 1.1; margin: 0; text-wrap: balance; }
+  .head .credit { color: var(--muted); font-size: .9rem; margin: 4px 0 0; }
+
+  .card {
+    background: var(--card); border-radius: 18px; box-shadow: var(--shadow);
+    padding: 22px 22px 24px; flex: 1; display: flex; flex-direction: column; min-width: 0;
+    touch-action: pan-y; position: relative; overflow: hidden;
+  }
+  .card.swipe-left { animation: slideL .22s ease; }
+  .card.swipe-right { animation: slideR .22s ease; }
+  @keyframes slideL { from { opacity: .3; transform: translateX(24px);} to { opacity: 1; transform: none;} }
+  @keyframes slideR { from { opacity: .3; transform: translateX(-24px);} to { opacity: 1; transform: none;} }
+  .label { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; margin-bottom: 14px; }
+  .label .v { text-transform: uppercase; letter-spacing: .08em; font-size: .78rem; font-weight: 800; color: var(--accent); }
+  .label .takt { color: var(--muted); font-size: .85rem; font-variant-numeric: tabular-nums; }
+  .lines { margin: 0; padding: 0; list-style: none; display: grid; gap: 6px; }
+  .line {
+    font-family: var(--display); font-size: clamp(1.25rem, 4.8vw, 1.6rem); font-weight: 500; line-height: 1.35;
+    padding: 4px 8px; margin: 0 -8px; border-radius: 8px; cursor: default; overflow-wrap: anywhere;
+    display: flex; align-items: baseline; justify-content: space-between; gap: 12px;
+  }
+  .line > span:first-child { min-width: 0; }
+  .line .tag { flex: none; font-family: var(--body); font-size: .72rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+  .line.on { color: var(--accent); background: var(--accent-soft); }
+  .line.on .tag { color: var(--accent); }
+  .line.note { color: var(--muted); font-style: italic; font-size: 1.05rem; font-family: var(--body); }
+  .rest { color: var(--muted); font-size: .9rem; margin: 14px 0 0; }
+
+  .dots { display: flex; justify-content: center; flex-wrap: wrap; gap: 6px; }
+  .dots button { width: 10px; height: 10px; border-radius: 50%; background: var(--line); padding: 0; transition: transform .15s ease; }
+  .dots button[aria-current="true"] { background: var(--accent); transform: scale(1.35); }
+
+  .nav { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; align-items: center; }
+  .nav .last { display: flex; align-items: center; justify-content: center; min-height: 54px; border-radius: 14px; background: var(--accent-soft); color: var(--accent); font-weight: 800; text-transform: uppercase; letter-spacing: .06em; font-size: .85rem; }
+  .home-btn { width: 100%; min-height: 54px; border-radius: 14px; background: var(--accent); color: var(--accent-ink); font-weight: 800; padding: 14px 18px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+  .home-btn svg { width: 20px; height: 20px; }
+  .nav .go {
+    background: var(--card); box-shadow: var(--shadow); border-radius: 14px; padding: 14px 16px; font-weight: 800;
+    display: flex; align-items: center; justify-content: center; gap: 6px; min-height: 54px;
+  }
+  .nav .go:disabled { opacity: .35; cursor: default; }
+  .nav .go svg { width: 20px; height: 20px; }
+
+  @media (prefers-reduced-motion: reduce) { .card.swipe-left, .card.swipe-right { animation: none; } .song-btn, .dots button { transition: none; } }
+</style>
+
+<div class="wrap" id="app"></div>
+
+<script>
+/* Song texts transcribed from the printed sheet music. Lines follow the printed line breaks. */
+const SONGS = [
+  {
+    id: "en-rose", title: "En rose så jeg skyde", credit: "M. Vulpius / M. Prætorius",
+    unit: "Vers",
+    sections: [
+      { label: "Kanon", lines: ["En rose så jeg skyde", "op af den frosne jord,", "alt som os fordum spåede", "profetens trøsteord."] },
+      { label: "Vers 1", lines: ["En rose så jeg skyde", "op af den frosne jord.", "Alt som os fordum spå'de", "profetens trøsteord.", "Den rose spired' frem", "midt i den kolde vinter", "om nat ved Betlehem."] },
+      { label: "Vers 2", lines: ["For rosen nu jeg kvæder", "om kap med himlens hær:", "En jomfru var hans moder,", "Maria ren og skær.", "I ham brød lyset frem", "midt i den mørke vinter", "om nat ved Betlehem."] },
+      { label: "Vers 3", lines: ["Den rose fin og lille", "har dejlig duft og skær;", "den lyse for os ville", "og sprede mørket her;", "i sandhed mand og Gud", "af syndens nød og pine", "han nådig hjalp os ud."] },
+    ],
+  },
+  {
+    id: "juletraeet", title: "Juletræet med sin pynt", credit: "Mogens Lorentzen 1939 · Egil Harder 1940",
+    unit: "Vers",
+    sections: [
+      { label: "Vers 1", lines: ["Juletræet med sin pynt", "venter på, vi får begyndt.", "Aldrig har det vær't så grønt,", "aldrig har det vær't så kønt.", "Og fra selve himlen gled", "vist den store stjerne ned."] },
+      { label: "Vers 2", lines: ["Hjerter klippet med en saks", "af den fingernemme slags,", "kræmmerhus med krøllet hank,", "som så let får en skavank,", "kurve, kugler, fugle, flag,", "op og ned og for og bag."] },
+      { label: "Vers 3", lines: ["Når de mange fine ting", "hænger roligt rundt omkring,", "og når alle lys er tændt,", "og her lugter brunt og brændt,", "er det som en sommerdag,", "der, hvor træet kommer fra."] },
+      { label: "Vers 4", lines: ["Alle vegne ud og ind", "glimrer edderkoppespind,", "mon der ikke bor en spurv", "her i denne lille kurv?", "Kræmmerhus med nødder i", "er grangiv'lig kogleri."] },
+      { label: "Vers 5", lines: ["Juletræet på besøg", "hilser og fra eg og bøg", "med besked derudefra,", "at det lysner dag for dag,", "og at solen fra sit skjul", "ønsker os en glædelig jul!"] },
+    ],
+  },
+  {
+    id: "velkommen-igen", title: "Velkommen igen, Guds engle små", credit: "N.F.S. Grundtvig 1825 · C.E.F. Weyse 1838",
+    unit: "Vers",
+    sections: [
+      { label: "Vers 1", lines: ["Velkommen igen, Guds engle små,", "fra høje himmelsale,", "med dejlige solskinsklæder på,", "i jordens skyggedale!", "Trods klingrende frost godt år I spå", "for fugl og sæd i dvale."] },
+      { label: "Vers 2", lines: ["Vel mødt under sky på kirkesti,", "på sne ved midnatstide!", "Udbære vor jul ej nænner I,", "derpå tør nok vi lide;", "o, ganger dog ej vor dør forbi!", "os volder ej den kvide."] },
+      { label: "Vers 3", lines: ["Vor hytte er lav og så vor dør,", "kun armod er herinde,", "men gæstet I har en hytte før,", "det drages vi til minde;", "er kruset af ler og kagen tør,", "deri sig engle finde."] },
+      { label: "Vers 4", lines: ["Med venlige øjne himmelblå,", "i vugger og i senge,", "vi puslinger har i hver en vrå,", "som blomster gro i enge!", "O, synger for dem, som lærker slå,", "som hørt de har ej længe!"] },
+      { label: "Vers 5", lines: ["Så drømme de sødt om Betlehem,", "og er det end forblommet,", "de drømme dog sandt om barnets hjem,", "som lå i krybberummet;", "de drømme, de lege jul med dem,", "hvis sang de har fornummet."] },
+      { label: "Vers 6", lines: ["Da vågne de mildt i morgengry", "og tælle mer ej timer,", "da høre vi julesang på ny,", "som sig med hjertet rimer,", "da klinger det sødt i højen sky,", "når juleklokken kimer."] },
+      { label: "Vers 7", lines: ["Da vandre Guds engle op og ned", "på salmens tonestige,", "da byder vor Herre selv Guds fred", "til dem, den efterhige;", "da åbner sig Himlens borgeled,", "da kommer ret Guds rige."] },
+      { label: "Vers 8", lines: ["O, måtte vi kun den glæde se,", "før vore øjne lukkes!", "Da skal, som en barnemoders ve,", "vor smerte sødt bortvugges.", "Vor Fader i Himlen! lad det ske!", "lad julesorgen slukkes."] },
+    ],
+  },
+  {
+    id: "sancta-lucia", title: "Sancta Lucia", credit: "Arr. Niels Møller",
+    unit: "Vers",
+    sections: [
+      { label: "Vers 1", lines: ["Natten går tungt afsted,", "slukt er hver kerte.", "Mørket med håbløshed", "knuger vort hjerte.", "Da gennem mulmets gys", "stråler med tændte lys", "Sancta Lucia, Sancta Lucia."] },
+      { label: "Vers 2", lines: ["Natten var stor og stum,", "hør, hvor det svinger", "i alle tyste rum,", "sus som af vinger.", "Se, på vor tærskel står", "hvidklædt med lys i hår", "Sancta Lucia, Sancta Lucia."] },
+      { label: "Vers 3", lines: ["”Mørket skal flygte snart", "fra jordens dale..”", "Således underbart", "høres hun tale:", "”Dagen skal atter ny", "stige af rosensky”.", "Sancta Lucia, Sancta Lucia."] },
+      { label: "Vers 4", lines: ["Ved dine trøsteord", "livsmodet vækkes,", "ned i den sorte jord", "rædslerne skrækkes.", "Livskraft og virkelyst", "vækkes da i vort bryst.", "Sancta Lucia, Sancta Lucia."] },
+      { label: "Vers 5", lines: ["Tænder vi vore blus", "her ved din lue.", "Rundt i vort ringe hus,", "hver vrå og stue,", "opsender lyset smukt,", "jager alt ondt på flugt,", "Sancta Lucia, Sancta Lucia."] },
+      { label: "Vers 6", lines: ["Oplys, hvor du går frem", "med lykkens lue,", "hele vort lille hjem,", "stue for stue.", "Fri det fra synd og sorg,", "gør det til glædens borg.", "Sancta Lucia, Sancta Lucia."] },
+    ],
+  },
+  {
+    id: "carol-of-the-bells", title: "Carol of the Bells", credit: "M. Leontovich · arr. Peter J. Wilhousky · SSA a cappella",
+    unit: "Del",
+    voices: ["Sopran I", "Sopran II", "Alt"],
+    /* Each line lists the voices that sing it (S1 = Sopran I, S2 = Sopran II, A = Alt). Lines with no voice are notes. */
+    sections: [
+      { label: "Del 1", takt: "Takt 1–7", lines: [
+        { t: "Hark! how the bells, sweet silver bells,", v: ["S1"] },
+        { t: "All seem to say, “throw cares away.”", v: ["S1"] },
+        { t: "Christmas is here bringing good cheer,", v: ["S1"] },
+        { t: "To young and old, meek and the bold.", v: ["S1"] },
+        { t: "Ding, dong, ding, dong.", v: ["A"] },
+      ] },
+      { label: "Del 2", takt: "Takt 8–11", lines: [
+        { t: "Ding, dong, ding, dong, that is their song,", v: ["S1"] },
+        { t: "With joyful ring, all caroling.", v: ["S1"] },
+        { t: "Ding, dong, ding, dong.", v: ["S2", "A"] },
+      ] },
+      { label: "Del 3", takt: "Takt 12–15", lines: [
+        { t: "One seems to hear words of good cheer", v: ["S1", "S2", "A"] },
+        { t: "From ev'rywhere filling the air.", v: ["S1", "S2", "A"] },
+      ] },
+      { label: "Del 4", takt: "Takt 16–19", lines: [
+        { t: "Oh, how they pound, raising the sound", v: ["S1", "S2"] },
+        { t: "O'er hill and dale, telling their tale.", v: ["S1", "S2"] },
+        { t: "Oh, how happy are their tones.", v: ["A"] },
+      ] },
+      { label: "Del 5", takt: "Takt 20–24", lines: [
+        { t: "Gaily they ring, while people sing", v: ["S1", "S2", "A"] },
+        { t: "Songs of good cheer, Christmas is here!", v: ["S1", "S2", "A"] },
+      ] },
+      { label: "Del 6", takt: "Takt 25–28", lines: [
+        { t: "Merry, Merry, Merry, Merry Christmas!", v: ["S1"] },
+        { t: "Merry, Merry, Merry, Merry Christmas!", v: ["S1"] },
+        { t: "Ding, ding, dong, Ding, ding, dong.", v: ["S2"] },
+        { t: "Ding, dong, ding, dong, That is their song,", v: ["A"] },
+        { t: "With joyful ring, all caroling.", v: ["A"] },
+      ] },
+      { label: "Del 7", takt: "Takt 29–32 · dim.", lines: [
+        { t: "On, on they send, on without end,", v: ["S1"] },
+        { t: "their joyful tone to ev'ry home.", v: ["S1"] },
+        { t: "Ding, dong, ding ____", v: ["S2", "A"] },
+      ] },
+      { label: "Del 8", takt: "Takt 33–36 · 1. gang, pp", lines: [
+        { t: "Hark! how the bells, sweet silver bells,", v: ["S1"] },
+        { t: "All seem to say, “throw cares away.”", v: ["S1"] },
+        { t: "dong ________", v: ["S2", "A"] },
+        { t: "(så tilbage til takt 5)", v: [] },
+      ] },
+      { label: "Del 9", takt: "Takt 37–39 · 2. gang", lines: [
+        { t: "dong ________", v: ["S1", "S2"] },
+        { t: "On, on they send, on without end,", v: ["A"] },
+        { t: "Their joyful tone to ev'ry home.", v: ["A"] },
+      ] },
+      { label: "Del 10", takt: "Takt 40–42 · Slowly", lines: [
+        { t: "Ding, dong, ding, dong.", v: ["S1", "S2"] },
+        { t: "Bohm!", v: ["A"] },
+      ] },
+    ],
+  },
+];
+
+const app = document.getElementById("app");
+const state = { song: null, part: null, idx: 0 };
+const ICON_HOME = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>';
+
+function load(key, fallback) { try { const v = localStorage.getItem(key); return v === null ? fallback : JSON.parse(v); } catch { return fallback; } }
+function save(key, val) { try { localStorage.setItem(key, JSON.stringify(val)); } catch {} }
+
+function sectionsOf(song) { return song.sections; }
+const VOICE_KEY = { "Sopran I": "S1", "Sopran II": "S2", "Alt": "A" };
+const VOICE_TAG = { S1: "S I", S2: "S II", A: "Alt" };
+function esc(s) { return s.replace(/&/g, "&amp;").replace(/</g, "&lt;"); }
+
+const ICON_L = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>';
+const ICON_R = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>';
+
+function renderHome() {
+  app.innerHTML = `
+    <section class="home">
+      <h1>Sanglektier Sankt Annæ</h1>
+      <p class="sub">Vælg en sang og bladr gennem den vers for vers.</p>
+      <ul class="songs">
+        ${SONGS.map(s => {
+          const n = s.sections.length;
+          return `<li><button class="song-btn" data-song="${s.id}">
+            <span><span class="t">${esc(s.title)}</span><br><span class="m">${esc(s.credit)}</span></span>
+            <span class="n">${n} ${s.unit === "Del" ? "dele" : "vers"}</span>
+          </button></li>`;
+        }).join("")}
+      </ul>
+    </section>`;
+  app.querySelectorAll("[data-song]").forEach(b => b.addEventListener("click", () => openSong(b.dataset.song)));
+}
+
+function openSong(id, push = true) {
+  const song = SONGS.find(s => s.id === id);
+  if (!song) return renderHome();
+  state.song = song;
+  state.part = song.voices ? load("part:" + id, null) : null;
+  if (state.part && !song.voices.includes(state.part)) state.part = null;
+  state.idx = Math.min(load("idx:" + id, 0), sectionsOf(song).length - 1);
+  if (push && location.hash !== "#" + id) history.replaceState(null, "", "#" + id);
+  renderSong();
+}
+
+function renderSong() {
+  const song = state.song, secs = sectionsOf(song), sec = secs[state.idx], last = state.idx === secs.length - 1;
+  app.innerHTML = `
+    <section class="view">
+      <div class="top">
+        <button class="back" id="back">${ICON_L} Alle sange</button>
+        ${song.voices ? `<div class="parts" role="group" aria-label="Stemme"><button data-part="" aria-pressed="${state.part === null}">Alle</button>${song.voices.map(p => `<button data-part="${p}" aria-pressed="${p === state.part}">${p}</button>`).join("")}</div>` : ""}
+      </div>
+      <div class="head"><h2>${esc(song.title)}</h2><p class="credit">${esc(song.credit)}</p></div>
+      <div class="card" id="card">
+        <div class="label"><span class="v">${esc(sec.label)} af ${secs.length}</span>${sec.takt ? `<span class="takt">${esc(sec.takt)}</span>` : ""}</div>
+        <ol class="lines" id="lines">
+          ${sec.lines.map(l => {
+            if (typeof l === "string") return `<li class="line"><span>${esc(l)}</span></li>`;
+            if (!l.v.length) return `<li class="line note"><span>${esc(l.t)}</span></li>`;
+            const on = state.part && l.v.includes(VOICE_KEY[state.part]);
+            return `<li class="line${on ? " on" : ""}"><span>${esc(l.t)}</span><span class="tag">${l.v.map(k => VOICE_TAG[k]).join(" · ")}</span></li>`;
+          }).join("")}
+        </ol>
+        ${song.voices && state.part && !sec.lines.some(l => l.v && l.v.includes(VOICE_KEY[state.part])) ? `<p class="rest">${esc(state.part)} holder pause her.</p>` : ""}
+      </div>
+      <div class="dots" id="dots">${secs.map((s, i) => `<button data-go="${i}" aria-label="${esc(s.label)}" aria-current="${i === state.idx}"></button>`).join("")}</div>
+      <div class="nav">
+        <button class="go" id="prev" ${state.idx === 0 ? "disabled" : ""}>${ICON_L}<span class="txt">Forrige</span></button>
+        ${last ? `<div class="last" aria-live="polite">Sidste ${song.unit === "Del" ? "del" : "vers"}</div>`
+               : `<button class="go" id="next"><span class="txt">Næste</span>${ICON_R}</button>`}
+      </div>
+      ${last ? `<button class="home-btn" id="home">${ICON_HOME} Tilbage til alle sange</button>` : ""}
+    </section>`;
+
+  const goHome = () => { history.replaceState(null, "", location.pathname + location.search); renderHome(); };
+  document.getElementById("back").addEventListener("click", goHome);
+  document.getElementById("prev").addEventListener("click", () => go(-1));
+  const next = document.getElementById("next"); if (next) next.addEventListener("click", () => go(1));
+  const home = document.getElementById("home"); if (home) home.addEventListener("click", goHome);
+  app.querySelectorAll("[data-go]").forEach(b => b.addEventListener("click", () => jump(+b.dataset.go)));
+  app.querySelectorAll("[data-part]").forEach(b => b.addEventListener("click", () => {
+    state.part = b.dataset.part || null; save("part:" + song.id, state.part);
+    state.idx = Math.min(state.idx, sectionsOf(song).length - 1); renderSong();
+  }));
+
+  // Swipe between verses on touch screens
+  const card = document.getElementById("card");
+  let x0 = null, y0 = null;
+  card.addEventListener("touchstart", e => { x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; }, { passive: true });
+  card.addEventListener("touchend", e => {
+    if (x0 === null) return;
+    const dx = e.changedTouches[0].clientX - x0, dy = e.changedTouches[0].clientY - y0;
+    x0 = y0 = null;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) go(dx < 0 ? 1 : -1);
+  }, { passive: true });
+}
+
+function jump(i, dir) {
+  const n = sectionsOf(state.song).length;
+  if (i < 0 || i >= n || i === state.idx) return;
+  dir = dir || (i > state.idx ? 1 : -1);
+  state.idx = i;
+  save("idx:" + state.song.id, i);
+  renderSong();
+  const card = document.getElementById("card");
+  card.classList.add(dir > 0 ? "swipe-left" : "swipe-right");
+}
+function go(d) { jump(state.idx + d, d); }
+
+document.addEventListener("keydown", e => {
+  if (!state.song || e.target.closest("input, textarea")) return;
+  if (e.key === "ArrowRight") go(1);
+  else if (e.key === "ArrowLeft") go(-1);
+  else if (e.key === "Escape") { history.replaceState(null, "", location.pathname + location.search); renderHome(); }
+});
+
+function route() {
+  const id = location.hash.replace(/^#/, "");
+  if (id && SONGS.some(s => s.id === id)) openSong(id, false); else { state.song = null; renderHome(); }
+}
+window.addEventListener("hashchange", route);
+route();
+</script>
+</body>
+</html>

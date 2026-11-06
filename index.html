@@ -274,47 +274,40 @@ const SONGS = [
     voices: [{ k: "S", name: "Sopran", tag: "S" }, { k: "A", name: "Alt", tag: "A" }, { k: "D", name: "Diskant", tag: "Disk." }],
   },
   {
-    id: "ding-dong", title: "Ding Dong Merrily on High", credit: "Willcocks · arr. Anne-Terese Sales · første del af medley med Nu tændes tusind julelys",
+    id: "ding-dong", title: "Ding Dong Merrily on High / Nu tændes tusind julelys", credit: "Willcocks · arr. Anne-Terese Sales · medley for SSAA og harpe",
     unit: "Del",
-    voices: [{ k: "S1", name: "Sopran 1", tag: "S1" }, { k: "S2", name: "Sopran 2", tag: "S2" }, { k: "A", name: "Alt", tag: "Alt" }],
+    voices: [{ k: "SOL", name: "Solist", tag: "Solo" }, { k: "S1", name: "Sopran 1", tag: "S1" }, { k: "S2", name: "Sopran 2", tag: "S2" }, { k: "A1", name: "Alt 1", tag: "A1" }, { k: "A2", name: "Alt 2", tag: "A2" }],
     sections: [
       { label: "Del 1", takt: "Takt 1–7 · vers 1", lines: [
         { t: "Ding dong, merrily on high,", v: ["S1"] },
-        { t: "in heav'n the bells are ringing.", v: ["S1", "S2", "A"] },
+        { t: "in heav'n the bells are ringing.", v: ["S1", "S2", "A1", "A2"] },
         { t: "Ding dong, verily the sky", v: ["S1"] },
-        { t: "is riv'n the angels singing:", v: ["S1", "S2", "A"] },
+        { t: "is riv'n the angels singing:", v: ["S1", "S2", "A1", "A2"] },
       ] },
       { label: "Del 2", takt: "Takt 8–15 · Gloria (efter hvert vers)", lines: [
         { t: "Glo-o-o-o-ria, Hosanna in excelsis!", v: ["S1"] },
-        { t: "Hosanna! Hosanna! Hosanna! Hosanna! Hosanna!", v: ["S2", "A"] },
-        { t: "Hosanna, Hosanna in excelsis!", v: ["S2", "A"] },
+        { t: "Hosanna! Hosanna! Hosanna! Hosanna! Hosanna!", v: ["S2", "A1", "A2"] },
+        { t: "Hosanna, Hosanna in excelsis!", v: ["S2", "A1", "A2"] },
       ] },
       { label: "Del 3", takt: "Takt 1–7 · vers 2", lines: [
         { t: "E'en so here below, below,", v: ["S1"] },
-        { t: "let steeple bells be swungen!", v: ["S1", "S2", "A"] },
+        { t: "let steeple bells be swungen!", v: ["S1", "S2", "A1", "A2"] },
         { t: "And ee-o-ee-o-ee-o", v: ["S1"] },
-        { t: "by priest and people sungen!", v: ["S1", "S2", "A"] },
+        { t: "by priest and people sungen!", v: ["S1", "S2", "A1", "A2"] },
         { t: "(derefter Gloria igen, del 2)", v: [] },
       ] },
       { label: "Del 4", takt: "Takt 1–7 · vers 3", lines: [
         { t: "Pray you dutifully prime,", v: ["S1"] },
-        { t: "your matin chime, ye ringers,", v: ["S1", "S2", "A"] },
+        { t: "your matin chime, ye ringers,", v: ["S1", "S2", "A1", "A2"] },
         { t: "may you beautifully rime", v: ["S1"] },
-        { t: "your evetime song, ye singers!", v: ["S1", "S2", "A"] },
-        { t: "(derefter Gloria igen, del 2, med 3. slutning: \u201dsanna in excelsis!\u201d \u2013 og videre i Nu tændes tusind julelys)", v: [] },
+        { t: "your evetime song, ye singers!", v: ["S1", "S2", "A1", "A2"] },
+        { t: "(derefter Gloria igen, del 2, med 3. slutning: \u201dsanna in excelsis!\u201d \u2013 og videre til Nu tændes tusind julelys, del 5)", v: [] },
       ] },
-    ],
-  },
-  {
-    id: "nu-taendes", title: "Nu tændes tusind julelys", credit: "For SSAA og harpe · arr. Anne-Terese Sales · anden del af medley efter Ding Dong",
-    unit: "Del",
-    voices: [{ k: "SOL", name: "Solist", tag: "Solo" }, { k: "S1", name: "Sopran 1", tag: "S1" }, { k: "S2", name: "Sopran 2", tag: "S2" }, { k: "A1", name: "Alt 1", tag: "A1" }, { k: "A2", name: "Alt 2", tag: "A2" }],
-    sections: [
-      { label: "Del 1", takt: "Takt 17–26 · roligt tempo", lines: [
+      { label: "Del 5", takt: "Takt 17–26 · roligt tempo", lines: [
         { t: "Ding… Ding… Ding…", v: ["S1", "S2"] },
         { t: "Dong… Dong… Dong…", v: ["A1", "A2"] },
       ] },
-      { label: "Del 2", takt: "Takt 25–39 · vers 1 (solist el. 5. klasser)", lines: [
+      { label: "Del 6", takt: "Takt 25–39 · vers 1 (solist el. 5. klasser)", lines: [
         { t: "Nu tændes tusind julelys", v: ["SOL"] },
         { t: "på jorden mørk og rund,", v: ["SOL"] },
         { t: "Ding, Ding / Dong, Dong (under solisten)", v: ["S1", "S2", "A1", "A2"] },
@@ -323,7 +316,7 @@ const SONGS = [
         { t: "mmm, Glo-o-o-ria, dybblå grund.", v: ["S1", "S2"] },
         { t: "Ding, ding dong, dybblå grund.", v: ["A1", "A2"] },
       ] },
-      { label: "Del 3", takt: "Takt 25–39 · vers 2 (gentagelse)", lines: [
+      { label: "Del 7", takt: "Takt 25–39 · vers 2 (gentagelse)", lines: [
         { t: "Over by og land i nat", v: ["SOL"] },
         { t: "går julens glade bud,", v: ["SOL"] },
         { t: "Ding, Ding / Dong, Dong (under solisten)", v: ["S1", "S2", "A1", "A2"] },
@@ -334,7 +327,7 @@ const SONGS = [
         { t: "Og", v: ["SOL"] },
         { t: "a, Ho- / ng, Ho- (2. slutning)", v: ["S1", "S2", "A1", "A2"] },
       ] },
-      { label: "Del 4", takt: "Takt 40–49", lines: [
+      { label: "Del 8", takt: "Takt 40–49", lines: [
         { t: "Glo-o-o-o-ria, Hosanna in excelsis!", v: ["SOL"] },
         { t: "sanna in excelsis!", v: ["S1", "S2", "A1", "A2"] },
         { t: "Du stjerne over Bethlehem,", v: ["S1", "S2", "A1", "A2"] },
@@ -342,13 +335,13 @@ const SONGS = [
         { t: "oplyse alt med håb og fred,", v: ["S1", "S2", "A1", "A2"] },
         { t: "så kærligheden ses.", v: ["S1", "S2", "A1", "A2"] },
       ] },
-      { label: "Del 5", takt: "Takt 50–58 · dolce", lines: [
+      { label: "Del 9", takt: "Takt 50–58 · dolce", lines: [
         { t: "Lad hvert et hjerte koldt og mørkt", v: ["S1", "S2", "A1", "A2"] },
         { t: "se strålen mild og blid,", v: ["S1", "S2", "A1", "A2"] },
         { t: "en stråle af Guds kærlighed", v: ["SOL", "S1", "S2", "A1", "A2"] },
         { t: "I signed juletid.", v: ["SOL"] },
       ] },
-      { label: "Del 6", takt: "Takt 58–63 · slut", lines: [
+      { label: "Del 10", takt: "Takt 58–63 · slut", lines: [
         { t: "Ding… Ding… Ding…", v: ["S1", "S2"] },
         { t: "Dong… Dong…", v: ["A1", "A2"] },
         { t: "Hosanna in excelsis!", v: ["SOL", "S1", "S2", "A1", "A2"] },

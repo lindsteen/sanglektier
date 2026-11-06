@@ -72,7 +72,7 @@
   .top { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
   .back { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); font-weight: 700; padding: 8px 10px 8px 4px; border-radius: 8px; }
   .back svg { width: 18px; height: 18px; }
-  .parts { display: flex; gap: 4px; background: var(--card); border-radius: 999px; padding: 4px; box-shadow: var(--shadow); }
+  .parts { display: flex; flex-wrap: wrap; gap: 4px; background: var(--card); border-radius: 22px; padding: 4px; box-shadow: var(--shadow); }
   .parts button { padding: 6px 12px; border-radius: 999px; font-weight: 700; font-size: .85rem; color: var(--muted); }
   .parts button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); }
 
@@ -89,7 +89,7 @@
   @keyframes slideL { from { opacity: .3; transform: translateX(24px);} to { opacity: 1; transform: none;} }
   @keyframes slideR { from { opacity: .3; transform: translateX(-24px);} to { opacity: 1; transform: none;} }
   .label { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; margin-bottom: 14px; }
-  .label .v { text-transform: uppercase; letter-spacing: .08em; font-size: .78rem; font-weight: 800; color: var(--accent); }
+  .label .v { white-space: nowrap; text-transform: uppercase; letter-spacing: .08em; font-size: .78rem; font-weight: 800; color: var(--accent); }
   .label .takt { color: var(--muted); font-size: .85rem; font-variant-numeric: tabular-nums; }
   .lines { margin: 0; padding: 0; list-style: none; display: grid; gap: 6px; }
   .line {
@@ -177,7 +177,7 @@ const SONGS = [
   {
     id: "carol-of-the-bells", title: "Carol of the Bells", credit: "M. Leontovich · arr. Peter J. Wilhousky · SSA a cappella",
     unit: "Del",
-    voices: ["Sopran I", "Sopran II", "Alt"],
+    voices: [{ k: "S1", name: "Sopran I", tag: "S I" }, { k: "S2", name: "Sopran II", tag: "S II" }, { k: "A", name: "Alt", tag: "Alt" }],
     /* Each line lists the voices that sing it (S1 = Sopran I, S2 = Sopran II, A = Alt). Lines with no voice are notes. */
     sections: [
       { label: "Del 1", takt: "Takt 1–7", lines: [
@@ -234,6 +234,127 @@ const SONGS = [
       ] },
     ],
   },
+  {
+    id: "dejlig-er-jorden", title: "Dejlig er jorden", credit: "Schlesisk melodi 18. årh. · tekst B.S. Ingemann 1850 · diskant Anders Öhrwall",
+    unit: "Vers",
+    sections: [
+      { label: "Vers 1", lines: ["Dejlig er jorden!", "Prægtig er Guds Himmel!", "Skøn er sjælenes pilgrimsgang!", "Gennem de favre", "riger på jorden", "går vi til Paradis med sang."] },
+      { label: "Vers 2", lines: ["Tider skal komme,", "tider skal henrulle,", "slægt skal følge slægters gang;", "aldrig forstummer", "tonen fra Himlen", "i sjælens glade pilgrimssang."] },
+      { label: "Vers 3", lines: ["Engle sang den", "først for hyrder;", "fra sjæl til sjæl det lød:", "Fred over jorden!", "Menneske, fryd dig,", "os er en evig frelser fød!"] },
+    ],
+  },
+  {
+    id: "lille-messias", title: "Lille Messias", credit: "Johs. Møllehave / Anne Linnet · arr. ep/06",
+    unit: "Vers",
+    sections: [
+      { label: "Vers 1", lines: ["En stjerne på himlen og flere og flere,", "i nat føder himlen med jordiske veer,", "i nat lover himlen at den vil befri os", "Maria på æslet (hm) med lille Messias."] },
+      { label: "Vers 2", lines: ["Maria skal føde", "sin glæde med smerte", "der banker et hjerte", "bag vinterens hjerte", "selv kulden og mørket", "har håb de vil gi' os.", "Maria på æslet", "med lille Messias."] },
+      { label: "Vers 6", lines: ["I fødslen er glæden", "forbundet med smerten", "dog aldrig var glæden", "så hjemløs i verden", "men stalden og krybben", "er tegn som skal si' os.", "Maria fandt plads", "da hun fødte Messias."] },
+      { label: "Vers 7", lines: ["En plads mellem får", "i en stald mellem stude", "hun fødte og svøbte", "den lille i klude", "og hyrdernes glæde", "var stor som Marias", "lys tændes i mørket", "nu fødtes Messias."] },
+    ],
+  },
+  {
+    id: "luk-julefreden-ind", title: "Luk julefreden ind", credit: "Musik Michael Bojesen · tekst Beathe Strands Barndorff · arr. Rasmus Thaarup",
+    unit: "Vers",
+    sections: [
+      { label: "Vers 1", lines: ["I nat der tændes julelys på jord,", "og Guds engle kommer til os hvis vi tror.", "Lad lyset brænde i vort sind.", "Luk julefreden ind."] },
+      { label: "Vers 2", lines: ["I nat der fødes Jesus på vor jord,", "alle englene de flyver uden snor.", "Lad lyset brænde i vort sind.", "Luk julefreden ind."] },
+      { label: "Vers 3", lines: ["På himlens tæppe findes der en stjerne,", "der lyser op, skønt den er i det fjerne.", "Lad lyset brænde i vort sind.", "Luk julefreden ind."] },
+      { label: "Vers 4", lines: ["Og lam og løve de vil slutte fred.", "Tæt ved krybbens fod, der lægger de sig ned.", "Lad lyset brænde i vort sind.", "Luk julefreden ind."] },
+      { label: "Vers 5", lines: [
+        { t: "Gud, lad din engel dale til vor jord,", v: ["S", "A"] },
+        { t: "og lad julefreden sænkes hvor vi bor.", v: ["S", "A"] },
+        { t: "Når lyset brænder i vort sind,", v: ["S", "A"] },
+        { t: "har freden fundet ind, har freden fundet ind.", v: ["S", "A"] },
+        { t: "Gud, lad din engel dale til vor jord, skænk julefred.", v: ["D"] },
+        { t: "Når lyset brænder i sind, har freden fundet ind.", v: ["D"] },
+        { t: "(diskanten synges kun i 5. vers og kan udelades)", v: [] },
+      ] },
+    ],
+    voices: [{ k: "S", name: "Sopran", tag: "S" }, { k: "A", name: "Alt", tag: "A" }, { k: "D", name: "Diskant", tag: "Disk." }],
+  },
+  {
+    id: "ding-dong", title: "Ding Dong Merrily on High", credit: "Willcocks · arr. Anne-Terese Sales · første del af medley med Nu tændes tusind julelys",
+    unit: "Del",
+    voices: [{ k: "S1", name: "Sopran 1", tag: "S1" }, { k: "S2", name: "Sopran 2", tag: "S2" }, { k: "A", name: "Alt", tag: "Alt" }],
+    sections: [
+      { label: "Del 1", takt: "Takt 1–7 · vers 1", lines: [
+        { t: "Ding dong, merrily on high,", v: ["S1"] },
+        { t: "in heav'n the bells are ringing.", v: ["S1", "S2", "A"] },
+        { t: "Ding dong, verily the sky", v: ["S1"] },
+        { t: "is riv'n the angels singing:", v: ["S1", "S2", "A"] },
+      ] },
+      { label: "Del 2", takt: "Takt 8–15 · Gloria (efter hvert vers)", lines: [
+        { t: "Glo-o-o-o-ria, Hosanna in excelsis!", v: ["S1"] },
+        { t: "Hosanna! Hosanna! Hosanna! Hosanna! Hosanna!", v: ["S2", "A"] },
+        { t: "Hosanna, Hosanna in excelsis!", v: ["S2", "A"] },
+      ] },
+      { label: "Del 3", takt: "Takt 1–7 · vers 2", lines: [
+        { t: "E'en so here below, below,", v: ["S1"] },
+        { t: "let steeple bells be swungen!", v: ["S1", "S2", "A"] },
+        { t: "And ee-o-ee-o-ee-o", v: ["S1"] },
+        { t: "by priest and people sungen!", v: ["S1", "S2", "A"] },
+        { t: "(derefter Gloria igen, del 2)", v: [] },
+      ] },
+      { label: "Del 4", takt: "Takt 1–7 · vers 3", lines: [
+        { t: "Pray you dutifully prime,", v: ["S1"] },
+        { t: "your matin chime, ye ringers,", v: ["S1", "S2", "A"] },
+        { t: "may you beautifully rime", v: ["S1"] },
+        { t: "your evetime song, ye singers!", v: ["S1", "S2", "A"] },
+        { t: "(derefter Gloria igen, del 2, med 3. slutning: \u201dsanna in excelsis!\u201d \u2013 og videre i Nu tændes tusind julelys)", v: [] },
+      ] },
+    ],
+  },
+  {
+    id: "nu-taendes", title: "Nu tændes tusind julelys", credit: "For SSAA og harpe · arr. Anne-Terese Sales · anden del af medley efter Ding Dong",
+    unit: "Del",
+    voices: [{ k: "SOL", name: "Solist", tag: "Solo" }, { k: "S1", name: "Sopran 1", tag: "S1" }, { k: "S2", name: "Sopran 2", tag: "S2" }, { k: "A1", name: "Alt 1", tag: "A1" }, { k: "A2", name: "Alt 2", tag: "A2" }],
+    sections: [
+      { label: "Del 1", takt: "Takt 17–26 · roligt tempo", lines: [
+        { t: "Ding… Ding… Ding…", v: ["S1", "S2"] },
+        { t: "Dong… Dong… Dong…", v: ["A1", "A2"] },
+      ] },
+      { label: "Del 2", takt: "Takt 25–39 · vers 1 (solist el. 5. klasser)", lines: [
+        { t: "Nu tændes tusind julelys", v: ["SOL"] },
+        { t: "på jorden mørk og rund,", v: ["SOL"] },
+        { t: "Ding, Ding / Dong, Dong (under solisten)", v: ["S1", "S2", "A1", "A2"] },
+        { t: "og tusind stjerner stråler smukt", v: ["SOL", "S1", "S2", "A1", "A2"] },
+        { t: "på himlens dybblå grund.", v: ["SOL", "A1", "A2"] },
+        { t: "mmm, Glo-o-o-ria, dybblå grund.", v: ["S1", "S2"] },
+        { t: "Ding, ding dong, dybblå grund.", v: ["A1", "A2"] },
+      ] },
+      { label: "Del 3", takt: "Takt 25–39 · vers 2 (gentagelse)", lines: [
+        { t: "Over by og land i nat", v: ["SOL"] },
+        { t: "går julens glade bud,", v: ["SOL"] },
+        { t: "Ding, Ding / Dong, Dong (under solisten)", v: ["S1", "S2", "A1", "A2"] },
+        { t: "at født er Herren Jesus Krist,", v: ["SOL", "S1", "S2", "A1", "A2"] },
+        { t: "vor frelser og vor gud.", v: ["SOL", "A1", "A2"] },
+        { t: "mmm, Glo-o-o-ria, dybblå grund.", v: ["S1", "S2"] },
+        { t: "Ding, ding dong, dybblå grund.", v: ["A1", "A2"] },
+        { t: "Og", v: ["SOL"] },
+        { t: "a, Ho- / ng, Ho- (2. slutning)", v: ["S1", "S2", "A1", "A2"] },
+      ] },
+      { label: "Del 4", takt: "Takt 40–49", lines: [
+        { t: "Glo-o-o-o-ria, Hosanna in excelsis!", v: ["SOL"] },
+        { t: "sanna in excelsis!", v: ["S1", "S2", "A1", "A2"] },
+        { t: "Du stjerne over Bethlehem,", v: ["S1", "S2", "A1", "A2"] },
+        { t: "o, lad dit milde lys", v: ["S1", "S2", "A1", "A2"] },
+        { t: "oplyse alt med håb og fred,", v: ["S1", "S2", "A1", "A2"] },
+        { t: "så kærligheden ses.", v: ["S1", "S2", "A1", "A2"] },
+      ] },
+      { label: "Del 5", takt: "Takt 50–58 · dolce", lines: [
+        { t: "Lad hvert et hjerte koldt og mørkt", v: ["S1", "S2", "A1", "A2"] },
+        { t: "se strålen mild og blid,", v: ["S1", "S2", "A1", "A2"] },
+        { t: "en stråle af Guds kærlighed", v: ["SOL", "S1", "S2", "A1", "A2"] },
+        { t: "I signed juletid.", v: ["SOL"] },
+      ] },
+      { label: "Del 6", takt: "Takt 58–63 · slut", lines: [
+        { t: "Ding… Ding… Ding…", v: ["S1", "S2"] },
+        { t: "Dong… Dong…", v: ["A1", "A2"] },
+        { t: "Hosanna in excelsis!", v: ["SOL", "S1", "S2", "A1", "A2"] },
+      ] },
+    ],
+  },
 ];
 
 const app = document.getElementById("app");
@@ -244,8 +365,9 @@ function load(key, fallback) { try { const v = localStorage.getItem(key); return
 function save(key, val) { try { localStorage.setItem(key, JSON.stringify(val)); } catch {} }
 
 function sectionsOf(song) { return song.sections; }
-const VOICE_KEY = { "Sopran I": "S1", "Sopran II": "S2", "Alt": "A" };
-const VOICE_TAG = { S1: "S I", S2: "S II", A: "Alt" };
+function setHash(h) { try { history.replaceState(null, "", h || location.pathname + location.search); } catch {} }
+function voiceTag(song, k) { const v = (song.voices || []).find(x => x.k === k); return v ? v.tag : k; }
+function voiceName(song, k) { const v = (song.voices || []).find(x => x.k === k); return v ? v.name : k; }
 function esc(s) { return s.replace(/&/g, "&amp;").replace(/</g, "&lt;"); }
 
 const ICON_L = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>';
@@ -274,9 +396,9 @@ function openSong(id, push = true) {
   if (!song) return renderHome();
   state.song = song;
   state.part = song.voices ? load("part:" + id, null) : null;
-  if (state.part && !song.voices.includes(state.part)) state.part = null;
+  if (state.part && !song.voices.some(v => v.k === state.part)) state.part = null;
   state.idx = Math.min(load("idx:" + id, 0), sectionsOf(song).length - 1);
-  if (push && location.hash !== "#" + id) history.replaceState(null, "", "#" + id);
+  if (push && location.hash !== "#" + id) setHash("#" + id);
   renderSong();
 }
 
@@ -286,7 +408,7 @@ function renderSong() {
     <section class="view">
       <div class="top">
         <button class="back" id="back">${ICON_L} Alle sange</button>
-        ${song.voices ? `<div class="parts" role="group" aria-label="Stemme"><button data-part="" aria-pressed="${state.part === null}">Alle</button>${song.voices.map(p => `<button data-part="${p}" aria-pressed="${p === state.part}">${p}</button>`).join("")}</div>` : ""}
+        ${song.voices ? `<div class="parts" role="group" aria-label="Stemme"><button data-part="" aria-pressed="${state.part === null}">Alle</button>${song.voices.map(p => `<button data-part="${p.k}" aria-pressed="${p.k === state.part}">${esc(p.name)}</button>`).join("")}</div>` : ""}
       </div>
       <div class="head"><h2>${esc(song.title)}</h2><p class="credit">${esc(song.credit)}</p></div>
       <div class="card" id="card">
@@ -295,11 +417,11 @@ function renderSong() {
           ${sec.lines.map(l => {
             if (typeof l === "string") return `<li class="line"><span>${esc(l)}</span></li>`;
             if (!l.v.length) return `<li class="line note"><span>${esc(l.t)}</span></li>`;
-            const on = state.part && l.v.includes(VOICE_KEY[state.part]);
-            return `<li class="line${on ? " on" : ""}"><span>${esc(l.t)}</span><span class="tag">${l.v.map(k => VOICE_TAG[k]).join(" · ")}</span></li>`;
+            const on = state.part && l.v.includes(state.part);
+            return `<li class="line${on ? " on" : ""}"><span>${esc(l.t)}</span><span class="tag">${l.v.map(k => esc(voiceTag(song, k))).join(" · ")}</span></li>`;
           }).join("")}
         </ol>
-        ${song.voices && state.part && !sec.lines.some(l => l.v && l.v.includes(VOICE_KEY[state.part])) ? `<p class="rest">${esc(state.part)} holder pause her.</p>` : ""}
+        ${song.voices && state.part && !sec.lines.some(l => l.v && l.v.includes(state.part)) ? `<p class="rest">${esc(voiceName(song, state.part))} holder pause her.</p>` : ""}
       </div>
       <div class="dots" id="dots">${secs.map((s, i) => `<button data-go="${i}" aria-label="${esc(s.label)}" aria-current="${i === state.idx}"></button>`).join("")}</div>
       <div class="nav">
@@ -310,7 +432,7 @@ function renderSong() {
       ${last ? `<button class="home-btn" id="home">${ICON_HOME} Tilbage til alle sange</button>` : ""}
     </section>`;
 
-  const goHome = () => { history.replaceState(null, "", location.pathname + location.search); renderHome(); };
+  const goHome = () => { setHash(""); state.song = null; renderHome(); };
   document.getElementById("back").addEventListener("click", goHome);
   document.getElementById("prev").addEventListener("click", () => go(-1));
   const next = document.getElementById("next"); if (next) next.addEventListener("click", () => go(1));
@@ -349,7 +471,7 @@ document.addEventListener("keydown", e => {
   if (!state.song || e.target.closest("input, textarea")) return;
   if (e.key === "ArrowRight") go(1);
   else if (e.key === "ArrowLeft") go(-1);
-  else if (e.key === "Escape") { history.replaceState(null, "", location.pathname + location.search); renderHome(); }
+  else if (e.key === "Escape") { setHash(""); state.song = null; renderHome(); }
 });
 
 function route() {
